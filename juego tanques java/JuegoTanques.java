@@ -5,12 +5,15 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -34,9 +37,40 @@ public class JuegoTanques extends JFrame {
 
     private void crearMenuInicio() {
         panelMenu = new JPanel();
-        panelMenu.setPreferredSize(new Dimension(800, 600));
+        panelMenu.setPreferredSize(new Dimension(850, 600)); // Ampliado para el panel lateral de puntajes
         panelMenu.setBackground(new Color(30, 30, 30));
-        panelMenu.setLayout(new GridBagLayout());
+        panelMenu.setLayout(new BorderLayout()); // Usamos BorderLayout para dividir pantalla
+
+        // --- 1. PANEL LATERAL DE PUNTAJES (Derecha) ---
+        JPanel panelPuntajes = new JPanel(new BorderLayout());
+        panelPuntajes.setPreferredSize(new Dimension(250, 600));
+        panelPuntajes.setBackground(new Color(40, 40, 40));
+        panelPuntajes.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel lblTituloPuntajes = new JLabel("MEJORES PUNTAJES", SwingConstants.CENTER);
+        lblTituloPuntajes.setFont(new Font("Arial", Font.BOLD, 14));
+        lblTituloPuntajes.setForeground(Color.WHITE);
+        panelPuntajes.add(lblTituloPuntajes, BorderLayout.NORTH);
+
+        JTextArea areaPuntajes = new JTextArea();
+        areaPuntajes.setEditable(false);
+        areaPuntajes.setBackground(new Color(40, 40, 40));
+        areaPuntajes.setForeground(Color.GREEN);
+        areaPuntajes.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        
+        // Cargamos los puntajes desde el GestorPuntajes
+        areaPuntajes.setText(GestorPuntajes.obtenerPuntajesTexto());
+
+        JScrollPane scrollPuntajes = new JScrollPane(areaPuntajes);
+        scrollPuntajes.setBorder(BorderFactory.createLineBorder(new Color(60, 60, 60)));
+        panelPuntajes.add(scrollPuntajes, BorderLayout.CENTER);
+
+        panelMenu.add(panelPuntajes, BorderLayout.EAST);
+
+        // --- 2. PANEL CENTRAL (Menú Principal Original) ---
+        JPanel panelCentral = new JPanel();
+        panelCentral.setBackground(new Color(30, 30, 30));
+        panelCentral.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
@@ -45,40 +79,40 @@ public class JuegoTanques extends JFrame {
 
         // Título del Juego
         JLabel lblTitulo = new JLabel("COMBATE DE TANQUES", SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 36));
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 30));
         lblTitulo.setForeground(Color.WHITE);
         gbc.gridy = 0;
-        panelMenu.add(lblTitulo, gbc);
+        panelCentral.add(lblTitulo, gbc);
 
         // Subtítulo / Instrucción
         JLabel lblSub = new JLabel("Selecciona el modo de juego", SwingConstants.CENTER);
-        lblSub.setFont(new Font("Arial", Font.PLAIN, 18));
+        lblSub.setFont(new Font("Arial", Font.PLAIN, 16));
         lblSub.setForeground(Color.LIGHT_GRAY);
         gbc.gridy = 1;
-        panelMenu.add(lblSub, gbc);
+        panelCentral.add(lblSub, gbc);
 
         // Botón Jugar Local
         JButton btnLocal = crearBotonMenu("MODO LOCAL");
         gbc.gridy = 2;
-        panelMenu.add(btnLocal, gbc);
-
+        panelCentral.add(btnLocal, gbc);
         btnLocal.addActionListener(e -> pedirDatosEIniciarLocal());
 
         // Botón Jugar En Línea
         JButton btnEnLinea = crearBotonMenu("MODO EN LÍNEA");
         gbc.gridy = 3;
-        panelMenu.add(btnEnLinea, gbc);
-
+        panelCentral.add(btnEnLinea, gbc);
         btnEnLinea.addActionListener(e -> iniciarModoEnLinea());
+
+        panelMenu.add(panelCentral, BorderLayout.CENTER);
     }
 
     private JButton crearBotonMenu(String texto) {
         JButton btn = new JButton(texto);
-        btn.setFont(new Font("Arial", Font.BOLD, 20));
+        btn.setFont(new Font("Arial", Font.BOLD, 18));
         btn.setFocusPainted(false);
         btn.setBackground(new Color(70, 130, 180));
         btn.setForeground(Color.WHITE);
-        btn.setPreferredSize(new Dimension(300, 50));
+        btn.setPreferredSize(new Dimension(280, 45));
         return btn;
     }
 
@@ -176,6 +210,9 @@ public class JuegoTanques extends JFrame {
             remove(panelJuego);
             panelJuego = null;
         }
+
+        // Recreamos el menú para que se actualice la lista de puntajes al volver
+        crearMenuInicio();
 
         add(panelMenu);
         pack();
