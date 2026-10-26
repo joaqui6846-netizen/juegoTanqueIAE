@@ -58,14 +58,14 @@ public class JuegoTanques extends JFrame {
         panelMenu.add(lblSub, gbc);
 
         // Botón Jugar Local
-        JButton btnLocal = crearBotonMenu("JUGAR EN LOCAL");
+        JButton btnLocal = crearBotonMenu("MODO LOCAL");
         gbc.gridy = 2;
         panelMenu.add(btnLocal, gbc);
 
         btnLocal.addActionListener(e -> pedirDatosEIniciarLocal());
 
         // Botón Jugar En Línea
-        JButton btnEnLinea = crearBotonMenu("JUGAR EN LÍNEA");
+        JButton btnEnLinea = crearBotonMenu("MODO EN LÍNEA");
         gbc.gridy = 3;
         panelMenu.add(btnEnLinea, gbc);
 
@@ -116,7 +116,7 @@ public class JuegoTanques extends JFrame {
 
         // Jugador 1
         gbc.gridx = 0; gbc.gridy = 0;
-        panelForm.add(new JLabel("Nombre Jugador 1 (WASD + Espacio):"), gbc);
+        panelForm.add(new JLabel("Primer Jugador (WASD + Enter):"), gbc);
         gbc.gridx = 1;
         panelForm.add(txtNombre1, gbc);
         gbc.gridx = 2;
@@ -126,7 +126,7 @@ public class JuegoTanques extends JFrame {
 
         // Jugador 2
         gbc.gridx = 0; gbc.gridy = 1;
-        panelForm.add(new JLabel("Nombre Jugador 2 (Flechas + M/Enter):"), gbc);
+        panelForm.add(new JLabel("Segundo Jugador (Flechas + Espacio):"), gbc);
         gbc.gridx = 1;
         panelForm.add(txtNombre2, gbc);
         gbc.gridx = 2;

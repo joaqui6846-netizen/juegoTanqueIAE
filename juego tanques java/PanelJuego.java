@@ -298,8 +298,8 @@ public class PanelJuego extends JPanel implements ActionListener {
 
         // Nombres sobre los marcadores
         g2d.setFont(new Font("Arial", Font.BOLD, 14));
-        g2d.drawString(nombreJugador1, 160, yBase - 10);
-        g2d.drawString(nombreJugador2, 520, yBase - 10);
+        g2d.drawString(nombreJugador1, 170, yBase - -40);
+        g2d.drawString(nombreJugador2, 530, yBase - -40);
 
         // Puntuación
         g2d.setFont(new Font("Arial", Font.BOLD, 22));
